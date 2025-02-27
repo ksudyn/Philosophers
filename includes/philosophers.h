@@ -26,5 +26,23 @@
 # include <stdlib.h>//malloc free
 
 # include <string.h>//memset
+//INT_MAX INT_MIN
+# include <stdint.h>
+# include <limits.h>
+typedef struct s_philosophers
+{
+	int		num_philo;
+	long	turns;
+};
+
+//LIBFT.C
+int	ft_strncmp(const char *s1, const char *s2, size_t n);
+size_t	ft_strlen(const char *s);
+char	*ft_strchr(const char *s, int c);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
+char	*ft_strtrim(char const *s1, char const *set);
+
+//UTILS.C
+int	check_number(char *numbers);
 
 #endif
