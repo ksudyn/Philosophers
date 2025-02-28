@@ -10,4 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "philosophers.h"
 
+int	main(int argc, char **argv)
+{
+	t_philosophers	philo;
+
+	if (argc != 5 && argc != 6)
+		return (ft_error(1));
+	if (parse(argv, philo) == 1)
+		return (ft_error(2));
+}

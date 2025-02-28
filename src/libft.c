@@ -82,20 +82,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	sub_string[i] = '\0';
 	return ((char *)sub_string);
 }
-
-char	*ft_strtrim(char const *s1, char const *set)
+int	is_digit(char c)
 {
-	int		i;
-	int		start;
-	char	*new_string;
-
-	i = 0;
-	while (ft_strchr(set, s1[i]) != 0 && s1[i] != '\0')
-		i++;
-	start = i;
-	i = ft_strlen(s1);
-	while (ft_strchr(set, s1[i]) != 0 && i != 0)
-		i--;
-	new_string = ft_substr(s1, start, i - start + 1);
-	return (new_string);
+	return (c >= '0' && c <= '9');
 }

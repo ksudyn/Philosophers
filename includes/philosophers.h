@@ -32,17 +32,26 @@
 typedef struct s_philosophers
 {
 	int		num_philo;
+	long	time_die;
+	long	time_eat;
+	long	time_sleep;
 	long	turns;
-};
+}				t_philosophers;
 
+//FT_ERROR.C
+int	ft_error(int i);
 //LIBFT.C
 int	ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strtrim(char const *s1, char const *set);
-
+int	is_digit(char c);
+//MAIN.C
+int	main(int argc, char **argv);
+//PARSE.C
+int	parse(char **argv, t_philosophers);
 //UTILS.C
 int	check_number(char *numbers);
+int	ft_atol(const char *num);
 
 #endif

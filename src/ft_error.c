@@ -12,8 +12,10 @@
 
 #include "philosophers.h"
 
-int	error(int i)
+int	ft_error(int i)
 {
 	if (i == 1)
-		write(2, "Número de argumentos erroneos.\n", 31);
+		printf("Número de argumentos erroneos.\n");
+	if (i == 2)
+		printf("Error al verificar y convertir los argumentos");
 }
