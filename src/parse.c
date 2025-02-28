@@ -12,9 +12,8 @@
 
 #include "philosophers.h"
 
-int	parse(char **argv, t_philosophers)
+int	parse(char **argv, t_philosophers *philo)
 {
-	t_philosophers	*philo;
 	int i;
 
 	i = 1;
@@ -26,12 +25,17 @@ int	parse(char **argv, t_philosophers)
 	}
 
 	philo->num_philo = ft_atol(argv[1]);
+	printf("%d\n", philo->num_philo);
 	philo->time_die = ft_atol(argv[2]);
+	printf("%ld\n", philo->time_die);
 	philo->time_eat = ft_atol(argv[3]);
+	printf("%ld\n", philo->time_eat);
 	philo->time_sleep = ft_atol(argv[4]);
-	if (i = 6)
+	printf("%ld\n", philo->time_sleep);
+	if (i == 6)
 	{
 		philo->turns = ft_atol(argv[5]);
+		printf("%ld\n", philo->turns);
 		if (philo->turns > INT_MAX || philo->turns == 0)
 				return (1);
 	}

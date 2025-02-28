@@ -18,4 +18,5 @@ int	ft_error(int i)
 		printf("Número de argumentos erroneos.\n");
 	if (i == 2)
 		printf("Error al verificar y convertir los argumentos");
+	return (1);
 }

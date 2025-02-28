@@ -49,7 +49,7 @@ int	is_digit(char c);
 //MAIN.C
 int	main(int argc, char **argv);
 //PARSE.C
-int	parse(char **argv, t_philosophers);
+int	parse(char **argv, t_philosophers *philo);
 //UTILS.C
 int	check_number(char *numbers);
 int	ft_atol(const char *num);

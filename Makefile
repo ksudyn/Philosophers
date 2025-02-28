@@ -11,10 +11,30 @@
 # **************************************************************************** #
 
 NAME = philo
+CC		=	gcc
+HEADERS = -I ./includes
+CFLAGS	=	-Wall -Werror -Wextra -O0
 
+SRCS := $(addprefix src/, \
+				ft_error.c \
+				libft.c \
+				main.c \
+				parse.c \
+				utils.c \
+				)
 
+OBJS	=	$(patsubst src/%.c, obj/%.o, $(SRCS))
+
+OBJDIR = obj
 
 all: $(NAME)
+
+$(NAME): $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+
+obj/%.o: src/%.c
+	@mkdir -p $(OBJDIR)
+	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
