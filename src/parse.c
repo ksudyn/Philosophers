@@ -12,7 +12,7 @@
 
 #include "philosophers.h"
 
-int	parse(char **argv, t_philosophers *philo)
+int	parse(char **argv, t_parse *philo)
 {
 	int i;
 
@@ -25,7 +25,7 @@ int	parse(char **argv, t_philosophers *philo)
 	}
 
 	philo->num_philo = ft_atol(argv[1]);
-	printf("%d\n", philo->num_philo);
+	printf("%ld\n", philo->num_philo);
 	philo->time_die = ft_atol(argv[2]);
 	printf("%ld\n", philo->time_die);
 	philo->time_eat = ft_atol(argv[3]);

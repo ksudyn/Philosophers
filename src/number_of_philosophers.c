@@ -10,4 +10,16 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "philosophers.h"
 
+int		philos(t_parse	*philo)
+{
+	int	i;
+
+	philo->philos = malloc(sizeof(*philo->philos) * philo->num_philo);
+	if (!philo->philos)
+    return (1);
+
+	i = 0;
+	
+}

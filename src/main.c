@@ -14,7 +14,7 @@
 
 int	main(int argc, char **argv)
 {
-	t_philosophers philo;
+	t_parse philo;
 
 	if (argc != 5 && argc != 6)
 		return (ft_error(1));

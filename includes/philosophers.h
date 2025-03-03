@@ -31,27 +31,46 @@
 # include <limits.h>
 typedef struct s_philosophers
 {
-	int		num_philo;
-	long	time_die;
-	long	time_eat;
-	long	time_sleep;
-	long	turns;
+	struct	s_parse		*parse;
+	int					philo;
+	long 				act_time;
+	long				last_eat;//almacena la ultima vez que el filosofo comio en milisegundos
+	pthread_mutex_t 	right_fork;
+	pthread_mutex_t 	*left_fork;
 }				t_philosophers;
 
+typedef struct s_parse
+{
+	pthread_mutex_t		mutex;//es un candado que impide que dos hilos (filósofos) modifiquen la misma variable al mismo tiempo
+	long				num_philo;
+	long				time_die;
+	long				time_eat;
+	long				time_sleep;
+	long				turns;
+	t_philosophers		*philos;
+}				t_parse;
+
 //FT_ERROR.C
-int	ft_error(int i);
+int		ft_error(int i);
 //LIBFT.C
-int	ft_strncmp(const char *s1, const char *s2, size_t n);
+int		ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t	ft_strlen(const char *s);
 char	*ft_strchr(const char *s, int c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
-int	is_digit(char c);
+int		is_digit(char c);
 //MAIN.C
-int	main(int argc, char **argv);
+int		main(int argc, char **argv);
 //PARSE.C
-int	parse(char **argv, t_philosophers *philo);
+int		parse(char **argv, t_parse *philo);
+//TIME_TO_DIE.C
+
+//TIME_TO_EAT.C
+int		eating(t_philosophers *philo, t_parse *parse);
+//TIME_TO_SLEEP.C
+
 //UTILS.C
-int	check_number(char *numbers);
-int	ft_atol(const char *num);
+int		check_number(char *numbers);
+int		ft_atol(const char *num);
+long	time_milliseconds(void);
 
 #endif

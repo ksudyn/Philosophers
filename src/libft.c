@@ -27,6 +27,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return (0);
 }
+
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;
@@ -82,6 +83,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	sub_string[i] = '\0';
 	return ((char *)sub_string);
 }
+
 int	is_digit(char c)
 {
 	return (c >= '0' && c <= '9');

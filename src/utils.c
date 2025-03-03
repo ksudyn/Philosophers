@@ -63,3 +63,13 @@ int	check_number(char *numbers)
 	return (0);
 }
 
+long	time_milliseconds(void)
+{
+	struct timeval time;
+	long long 	milisin;
+
+	gettimeofday(&time, NULL);
+	milisin = (time.tv_sec * 100) + (time.tv_usec / 1000);
+	
+	return(milisin);
+}//transforma el timepo a miliseguncos para que sea mas preciso
