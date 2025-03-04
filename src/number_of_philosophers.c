@@ -18,7 +18,7 @@ int		philos(t_parse	*philo)
 
 	philo->philos = malloc(sizeof(*philo->philos) * philo->num_philo);
 	if (!philo->philos)
-    return (1);
+    return (ft_error(3));
 
 	i = 0;
 	

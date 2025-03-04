@@ -65,12 +65,12 @@ int		parse(char **argv, t_parse *philo);
 //TIME_TO_DIE.C
 
 //TIME_TO_EAT.C
-int		eating(t_philosophers *philo, t_parse *parse);
+
 //TIME_TO_SLEEP.C
 
 //UTILS.C
 int		check_number(char *numbers);
 int		ft_atol(const char *num);
-long	time_milliseconds(void);
+long	milliseconds(void);
 
 #endif

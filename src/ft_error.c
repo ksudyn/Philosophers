@@ -18,5 +18,10 @@ int	ft_error(int i)
 		printf("Número de argumentos erroneos.\n");
 	if (i == 2)
 		printf("Error al verificar y convertir los argumentos");
-	return (1);
+	if (i == 3)
+		printf("Error al cargar los filosofos");
+	if (i == 4)
+		printf("Error al cargar los tenedores");
+	if (i == 5)
+		printf("Error al crear los hilos");
 }
