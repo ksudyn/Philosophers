@@ -32,7 +32,7 @@ int		init_philosophers(t_parse	*philo)
 
         i++;
     }
-    printf("las funciones philos funcionan 1\n");
+    printf("se reserva la memoria\n");
     return (0);
 }
 
@@ -49,7 +49,7 @@ void    assign_forks(t_parse *philo)
             philo->philos[i].left_fork = &philo->philos[i - 1].right_fork;
         i++;
     }
-    printf("las funciones philos funcionan 2\n");
+    printf("se cargan los tenedores\n");
 }
 
 int philos(t_parse *philo)
@@ -57,6 +57,6 @@ int philos(t_parse *philo)
     if (init_philosophers(philo) != 0)
         return (1);
     assign_forks(philo);
-    printf("las funciones philos funcionan 3\n");
+    printf("las funciones philos funcionan\n");
     return (0);
 }
