@@ -20,4 +20,6 @@ int	main(int argc, char **argv)
 		return (ft_error(1));
 	if (parse(argv, &philo) == 1)
 		return (ft_error(2));
+	if (philos(&philo) != 0)
+        return (ft_error(3));
 }

@@ -19,7 +19,13 @@ SRCS := $(addprefix src/, \
 				ft_error.c \
 				libft.c \
 				main.c \
+				number_of_philosophers.c \
 				parse.c \
+				routine.c \
+				think.c \
+				time_to_die.c \
+				time_to_eat.c \
+				time_to_sleep.c \
 				utils.c \
 				)
 

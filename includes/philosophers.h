@@ -37,6 +37,7 @@ typedef struct s_philosophers
 	long				last_eat;//almacena la ultima vez que el filosofo comio en milisegundos
 	pthread_mutex_t 	right_fork;
 	pthread_mutex_t 	*left_fork;
+	pthread_t			thread_id;
 }				t_philosophers;
 
 typedef struct s_parse
@@ -60,8 +61,14 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 int		is_digit(char c);
 //MAIN.C
 int		main(int argc, char **argv);
+//NUMBER_OF_PHILO
+int 	philos(t_parse *philo);
 //PARSE.C
 int		parse(char **argv, t_parse *philo);
+//ROUTINE.C
+
+//THINK.C
+
 //TIME_TO_DIE.C
 
 //TIME_TO_EAT.C
