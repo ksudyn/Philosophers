@@ -66,15 +66,15 @@ int 	philos(t_parse *philo);
 //PARSE.C
 int		parse(char **argv, t_parse *philo);
 //ROUTINE.C
-
+void *philo_routine(void *arg);
 //THINK.C
-
+void think(t_philosophers *philo);
 //TIME_TO_DIE.C
-
+void check_death(t_parse *philo);
 //TIME_TO_EAT.C
-
+void    eat(t_philosophers *philo);
 //TIME_TO_SLEEP.C
-
+void sleep_philo(t_philosophers *philo);
 //UTILS.C
 int		check_number(char *numbers);
 int		ft_atol(const char *num);
