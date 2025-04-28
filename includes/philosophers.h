@@ -29,20 +29,27 @@
 //INT_MAX INT_MIN
 # include <stdint.h>
 # include <limits.h>
+
+typedef struct s_parse t_parse; 
+
 typedef struct s_philosophers
 {
-	struct	s_parse		*parse;
-	int					philo;
-	long 				act_time;
+	pthread_mutex_t		mutex;//es un candado que impide que dos hilos (filósofos) modifiquen la misma variable al mismo tiempo
+	int					id_philo;
+	long long			act_time;
 	long				last_eat;//almacena la ultima vez que el filosofo comio en milisegundos
-	pthread_mutex_t 	right_fork;
-	pthread_mutex_t 	*left_fork;
+	int					right_fork;
+	int				 	left_fork;
 	pthread_t			thread_id;
+	t_parse				*parse;
 }				t_philosophers;
 
 typedef struct s_parse
 {
-	pthread_mutex_t		mutex;//es un candado que impide que dos hilos (filósofos) modifiquen la misma variable al mismo tiempo
+	pthread_mutex_t     *fork;
+	int					dead;
+	int					status;
+	int					total_turns;
 	long				num_philo;
 	long				time_die;
 	long				time_eat;
@@ -62,9 +69,9 @@ int		is_digit(char c);
 //MAIN.C
 int		main(int argc, char **argv);
 //NUMBER_OF_PHILO
-int 	philos(t_parse *philo);
+int 	init_philosophers(t_parse *parse);
 //PARSE.C
-int		parse(char **argv, t_parse *philo);
+int		ft_parse(char **argv, t_parse *philo);
 //ROUTINE.C
 void *philo_routine(void *arg);
 //THINK.C

@@ -12,9 +12,4 @@
 
 #include "philosophers.h"
 
-//Funcion temporal de pensar
-void think(t_philosophers *philo)
-{
-    printf("Filósofo %d está pensando 🤔\n", philo->philo);
-    usleep(philo->parse->time_sleep * 1000);  // Simula el tiempo de pensar
-}
+

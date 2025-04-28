@@ -12,9 +12,9 @@
 
 #include "philosophers.h"
 
-//Funcion temporal para dormir
-void sleep_philo(t_philosophers *philo)
-{
-    printf("Filósofo %d está durmiendo 💤\n", philo->philo);
-    usleep(philo->parse->time_sleep * 1000);  // Simula el tiempo de dormir
-}
+// //Funcion temporal para dormir
+// void sleep_philo(t_philosophers *philo)
+// {
+//     printf("Filósofo %d está durmiendo 💤\n", philo->philo);
+//     usleep(philo->parse->time_sleep * 1000);  // Simula el tiempo de dormir
+// }
