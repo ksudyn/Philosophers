@@ -69,7 +69,7 @@ long	milliseconds(void)
 	long long 	milliseconds;
 
 	gettimeofday(&time, NULL);
-	milliseconds = (time.tv_sec * 100) + (time.tv_usec / 1000);
+	milliseconds = (time.tv_sec * 1000) + (time.tv_usec / 1000);
 	
 	return(milliseconds);
 }//transforma el timepo a miliseguncos para que sea mas preciso

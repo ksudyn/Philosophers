@@ -14,17 +14,19 @@
 
 int	main(int argc, char **argv)
 {
-	t_parse parse;
+	t_rutine	rutine;
 
 	if (argc != 5 && argc != 6)
 		return (ft_error(1));
-	if (ft_parse(argv, &parse) == 1)
+	if (ft_parse(argv, &rutine) == 1)
 		return (ft_error(2));
-	if (init_philosophers(&parse))
-        return (ft_error(3));
+	if (init_philosophers(&rutine))
+		return (ft_error(3));
+	init_forks(&rutine);
+	rutine.start_rutine = milliseconds();
+	//start_threads(t_table *table) de sergio, que hace?
 	
-
 	return (0);
 }
-//Main temporal a falta de añadir nuevas cosas para la rutina
-//parseo bien hecho
+// Main temporal a falta de añadir nuevas cosas para la rutina
+// parseo bien hecho

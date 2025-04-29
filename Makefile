@@ -16,6 +16,7 @@ HEADERS = -I ./includes
 CFLAGS	=	-Wall -Werror -Wextra -O0
 
 SRCS := $(addprefix src/, \
+				forks.c \
 				ft_error.c \
 				libft.c \
 				main.c \

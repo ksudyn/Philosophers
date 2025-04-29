@@ -24,5 +24,7 @@ int	ft_error(int i)
 		printf("Error al cargar los tenedores");
 	if (i == 5)
 		printf("Error al crear los hilos");
+	if (i == 6)
+		printf("Error en el numero de filosofos");
 	return (1);
 }
