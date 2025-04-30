@@ -1,28 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   think.c                                            :+:      :+:    :+:   */
+/*   sleep.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ksudyn <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/10 18:39:57 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/03/10 18:40:22 by ksudyn           ###   ########.fr       */
+/*   Created: 2025/04/30 17:12:22 by ksudyn            #+#    #+#             */
+/*   Updated: 2025/04/30 17:12:24 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-void	ft_think(t_philosophers *philo)
+void	ft_sleep(t_philosophers *philo)
 {
+	long	start_sleep;
+
+	start_sleep = milliseconds();
 	if (is_dead(philo->rutine))
 		return ;
-	if (philo->rutine->status != 2)
+	if (philo->rutine->status != 0)
 	{
-		pthread_mutex_lock(&philo->rutine->print_lock);
-        printf("%ld %d is thinking\n", milliseconds(), philo->id_philo);
+		// Imprimir el estado de dormir con printf
+        pthread_mutex_lock(&philo->rutine->print_lock);
+        printf("%ld %d is sleeping\n", milliseconds(), philo->id_philo);
         pthread_mutex_unlock(&philo->rutine->print_lock);
-
-		philo->rutine->status = 2;
-		usleep(1000);
+		philo->rutine->status = 0;//Marca que el filósofo está durmiendo.
+	}
+	while (milliseconds() - start_sleep < philo->rutine->time_sleep)
+	{
+		if (is_dead(philo->rutine))
+			return ;
+		usleep(100);
 	}
 }

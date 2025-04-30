@@ -24,9 +24,9 @@ SRCS := $(addprefix src/, \
 				parse.c \
 				routine.c \
 				think.c \
-				time_to_die.c \
-				time_to_eat.c \
-				time_to_sleep.c \
+				die.c \
+				eat.c \
+				sleep.c \
 				utils.c \
 				)
 
