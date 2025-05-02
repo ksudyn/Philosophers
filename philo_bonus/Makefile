@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = philo
+NAME = philo_bonus
 CC		=	gcc
 HEADERS = -I ./includes
 CFLAGS	=	-Wall -Werror -Wextra -O0
