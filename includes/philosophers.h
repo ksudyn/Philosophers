@@ -27,44 +27,42 @@
 # include <stdint.h>
 
 typedef struct s_rutine	t_rutine;
-
 typedef struct s_philosophers
 {
-	pthread_mutex_t		mutex;
-	// es un candado que impide que dos hilos (filósofos) modifiquen la misma variable al mismo tiempo
 	int					id_philo;
 	long long			act_time;
-	long				last_eat;
-	// almacena la ultima vez que el filosofo comio en milisegundos
-	int					right_fork;
+	int					count_eaten;
 	int					left_fork;
+	int					right_fork;
+	pthread_mutex_t		mutex_philo;
 	pthread_t			thread_id;
 	t_rutine			*rutine;
 }						t_philosophers;
 
 typedef struct s_rutine
 {
-	pthread_mutex_t		*fork;
-	int					dead;
-	int					status;
+	int					num_philo;
+	int					time_die;
+	int					time_eat;
+	int					time_sleep;
 	int					total_turns;
-	int				num_philo;
-	int				time_die;
-	int				time_eat;
-	int				time_sleep;
-	int				turns;
+	int					dead;
+	int					philosophers_full;
+	int					status;
 	int					start_rutine;
-	int philosophers_full; // cantidad de filósofos que ya comieron lo suficiente
-	pthread_mutex_t meal_full; // protege esta variable
+	pthread_mutex_t		*fork;
+	pthread_mutex_t		meal_full;
 	pthread_mutex_t		print_lock;
 	pthread_mutex_t		check_dead;
-	t_philosophers		*philos;
+	pthread_mutex_t		mutex_rutine;
 	pthread_t			chechk_routine;
+	t_philosophers		*philos;
 }						t_rutine;
-//DIE.C
-int	is_dead(t_rutine *rutine);
-//EAT.C
-void eat(t_philosophers *philo);
+// DIE.C
+int						philo_is_dead(t_rutine *rutine);
+// EAT.C
+void					update_meal(t_philosophers *philo);
+void					ft_eat(t_philosophers *philo);
 // FORKS.C
 void					lock_forks(t_philosophers *philo);
 void					unlock_forks(t_philosophers *philo);
@@ -76,7 +74,8 @@ int						ft_error(int i);
 int						ft_strncmp(const char *s1, const char *s2, size_t n);
 size_t					ft_strlen(const char *s);
 char					*ft_strchr(const char *s, int c);
-char					*ft_substr(char const *s, unsigned int start, size_t len);
+char					*ft_substr(char const *s, unsigned int start,
+							size_t len);
 int						is_digit(char c);
 // MAIN.C
 int						main(int argc, char **argv);
@@ -88,14 +87,16 @@ int						ft_atol(const char *num);
 int						assign_value(int *dest, char *str);
 int						ft_parse(char **argv, t_rutine *rutine);
 // ROUTINE.C
-void    *routine(void *philo);
-//SLEEP.C
-void	ft_sleep(t_philosophers *philo);
+void					*routine(void *philo);
+// SLEEP.C
+void					ft_sleep(t_philosophers *philo);
 // THINK.C
-void	ft_think(t_philosophers *philo);
+void					ft_think(t_philosophers *philo);
 // UTILS.C
 long					milliseconds(void);
 void					init_mutex(t_rutine *rutine);
-void	*routine_check(void *arg);
+void					*routine_check(void *arg);
+int						philo_is_alive(t_philosophers *philo);
+void					destroy_mutex(t_rutine *routine);
 
 #endif

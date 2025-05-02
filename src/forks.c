@@ -26,7 +26,6 @@ void lock_forks(t_philosophers *philo)
         pthread_mutex_lock(&philo->rutine->fork[philo->right_fork]);
     }
 }
-
 // Si todos toman primero el tenedor izquierdo,
 // todos tendrían uno bloqueado, y nunca llegarían al segundo (interbloqueo total).
 // Al variar el orden entre pares e impares:
@@ -49,14 +48,11 @@ void unlock_forks(t_philosophers *philo)
     	pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
         pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
     }
-
 }
-
 // esta función es crucial para que los tenedores no queden "retenidos"
 // por un filósofo después de comer,
 // y para que la ejecución pueda continuar sin bloqueos innecesarios
 //tiene que desbloquearse en el orden inverso al que se bloquearon para optimizar
-
 
 void	init_forks(t_rutine *rutine)
 {
@@ -75,10 +71,8 @@ void	init_forks(t_rutine *rutine)
 			rutine->fork = NULL;
 			return ;
 		}
-        //printf("rutine->fork %i\n ", i);
 		i++;
 	}
-    printf("se reserva la memoria en forks\n");
 }
 
 void	destroy_forks(t_rutine *rutine, int i)

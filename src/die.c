@@ -12,9 +12,9 @@
 
 #include "philosophers.h"
 
-int	is_dead(t_rutine *rutine)
+int	philo_is_dead(t_rutine *rutine)
 {
-	int	dead;
+	int dead;
 
 	pthread_mutex_lock(&rutine->check_dead);
 	dead = rutine->dead;

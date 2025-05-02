@@ -14,14 +14,13 @@
 
 void	ft_think(t_philosophers *philo)
 {
-	if (is_dead(philo->rutine))
+	if (philo_is_dead(philo->rutine))
 		return ;
 	if (philo->rutine->status != 2)
 	{
 		pthread_mutex_lock(&philo->rutine->print_lock);
-        printf("%ld %d is thinking\n", milliseconds(), philo->id_philo);
-        pthread_mutex_unlock(&philo->rutine->print_lock);
-
+		printf("%d is thinking\n", philo->id_philo);
+		pthread_mutex_unlock(&philo->rutine->print_lock);
 		philo->rutine->status = 2;
 		usleep(1000);
 	}
