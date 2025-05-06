@@ -17,11 +17,38 @@
 // se deberia de escribir en init_mutex se pasa esto pthread_create(&thread, NULL, routine, philo);
 // y eso daría error de compilación. routine no es compatible con el tipo que espera
 
+void	precise_sleep(long duration)
+{
+	long	start;
+
+	start = milliseconds();
+	while ((milliseconds() - start) < duration)
+		usleep(100);
+}
+
+void	*one_philo(t_philosophers *philo)
+{
+	pthread_mutex_lock(&philo->rutine->fork[philo->left_fork]);
+
+	precise_sleep(philo->rutine->time_die);
+
+	pthread_mutex_lock(&philo->rutine->check_dead);
+	if (!philo->rutine->dead)
+	{
+		philo->rutine->dead = 1;
+	}
+	pthread_mutex_unlock(&philo->rutine->check_dead);
+	pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
+	return (NULL);
+}
+
 void	*routine(void *philo)
 {
 	t_philosophers	*phil;
 
 	phil = (t_philosophers *)philo;
+	if (phil->rutine->num_philo == 1)
+		return one_philo(philo);
 	if (phil->id_philo % 2 == 0)
 		usleep(5000);
 	while (!philo_is_dead(phil->rutine) && (phil->rutine->total_turns == -1
