@@ -31,21 +31,21 @@ void	ft_eat(t_philosophers *philo)
 		return ;
 	}
 	// Establece el estado del filósofo a "comiendo"
+
+	pthread_mutex_lock(&philo->rutine->mutex_rutine);  // Bloquea el mutex antes de modificar el estado
 	philo->rutine->status = 1;
+	pthread_mutex_unlock(&philo->rutine->mutex_rutine);  // Libera el mutex después de modificar el estado
+
 	// Imprime el mensaje de que el filósofo está comiendo
-	pthread_mutex_lock(&philo->rutine->print_lock);
-	printf("%d is eating\n", philo->id_philo);
-	pthread_mutex_unlock(&philo->rutine->print_lock);
+	print_message("is eating", philo);
 	// Actualiza el número de comidas (incrementa el contador)
 	update_meal(philo);
 	// Simula el tiempo que el filósofo tarda en comer
 	usleep(philo->rutine->time_eat * 1000);
-	// Después de comer, desbloquea los tenedores
 	unlock_forks(philo);
+	// Después de comer, desbloquea los tenedores
 	if (philo_is_dead(philo->rutine))
 		return ;
 	// Imprime un mensaje indicando que el filósofo ha terminado de comer
-	pthread_mutex_lock(&philo->rutine->print_lock);
-	printf("%d has finished eating\n", philo->id_philo);
-	pthread_mutex_unlock(&philo->rutine->print_lock);
+	print_message("has finished eating", philo);
 }

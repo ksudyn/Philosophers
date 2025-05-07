@@ -49,3 +49,6 @@ int	main(int argc, char **argv)
 // pthread_mutex_unlock		Desbloquea un mutex.
 // usleep					Suspende la ejecución por microsegundos.
 // malloc / free			Asignación y liberación de memoria dinámica.
+
+// probar esto 
+// valgrind --tool=helgrind ./philo

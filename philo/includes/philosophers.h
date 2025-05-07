@@ -64,6 +64,7 @@ int						philo_is_dead(t_rutine *rutine);
 void					update_meal(t_philosophers *philo);
 void					ft_eat(t_philosophers *philo);
 // FORKS.C
+void 					lock_forks_odd(t_philosophers *philo);
 void					lock_forks(t_philosophers *philo);
 void					unlock_forks(t_philosophers *philo);
 void					init_forks(t_rutine *rutine);
@@ -87,7 +88,10 @@ int						ft_atol(const char *num);
 int						assign_value(int *dest, char *str);
 int						ft_parse(char **argv, t_rutine *rutine);
 // ROUTINE.C
+void					precise_sleep(long duration);
+void					*one_philo(t_philosophers *philo);
 void					*routine(void *philo);
+void					*routine_check(void *arg);
 // SLEEP.C
 void					ft_sleep(t_philosophers *philo);
 // THINK.C
@@ -95,8 +99,8 @@ void					ft_think(t_philosophers *philo);
 // UTILS.C
 long					milliseconds(void);
 void					init_mutex(t_rutine *rutine);
-void					*routine_check(void *arg);
 int						philo_is_alive(t_philosophers *philo);
 void					destroy_mutex(t_rutine *routine);
+void					print_message(char *str, t_philosophers *philo);
 
 #endif

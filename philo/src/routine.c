@@ -29,9 +29,8 @@ void	precise_sleep(long duration)
 void	*one_philo(t_philosophers *philo)
 {
 	pthread_mutex_lock(&philo->rutine->fork[philo->left_fork]);
-
+	print_message("has taken a fork", philo);
 	precise_sleep(philo->rutine->time_die);
-
 	pthread_mutex_lock(&philo->rutine->check_dead);
 	if (!philo->rutine->dead)
 	{
@@ -66,6 +65,35 @@ void	*routine(void *philo)
 		pthread_mutex_lock(&phil->rutine->meal_full);
 		phil->rutine->philosophers_full++;
 		pthread_mutex_unlock(&phil->rutine->meal_full);
+	}
+	return (NULL);
+}
+
+void	*routine_check(void *arg)
+{
+	t_rutine	*rutine;
+	int			i;
+
+	rutine = (t_rutine *)arg;
+	while (1)
+	{
+		i = 0;
+		while (i < rutine->num_philo)
+		{
+			if (!philo_is_alive(&rutine->philos[i]))
+				return (NULL);
+			i++;
+		}
+		pthread_mutex_lock(&rutine->meal_full);
+		if (rutine->total_turns != -1
+			&& rutine->philosophers_full == rutine->num_philo)
+		{
+			pthread_mutex_unlock(&rutine->meal_full);
+			return (NULL);
+		}
+		pthread_mutex_unlock(&rutine->meal_full);
+		usleep(500);
+			// Pequeño delay para evitar sobrecargar la CPU con el bucle
 	}
 	return (NULL);
 }

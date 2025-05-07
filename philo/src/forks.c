@@ -12,20 +12,52 @@
 
 #include "philosophers.h"
 
+void lock_forks_odd(t_philosophers *philo)
+{
+	pthread_mutex_lock(&philo->rutine->fork[philo->left_fork]);
+	if (philo_is_dead(philo->rutine))
+	{
+		pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
+		return ;
+	}
+	pthread_mutex_lock(&philo->rutine->fork[philo->right_fork]);
+	print_message("has taken a fork", philo);
+	if (philo_is_dead(philo->rutine))
+	{
+		pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
+		pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
+		return ;
+	}
+	print_message("has taken a fork", philo);
+}
+
 void lock_forks(t_philosophers *philo)
 {
-    // Para evitar interbloqueos: orden de adquisición diferente para pares e impares
-    if (philo->id_philo % 2 == 0)
-    {
-        pthread_mutex_lock(&philo->rutine->fork[philo->right_fork]);
-        pthread_mutex_lock(&philo->rutine->fork[philo->left_fork]);
-    }
-    else
-    {
-        pthread_mutex_lock(&philo->rutine->fork[philo->left_fork]);
-        pthread_mutex_lock(&philo->rutine->fork[philo->right_fork]);
-    }
+	if (philo_is_dead(philo->rutine))
+		return ;
+
+	if (philo->id_philo % 2 == 0)
+	{
+		pthread_mutex_lock(&philo->rutine->fork[philo->right_fork]);
+		if (philo_is_dead(philo->rutine))
+		{
+			pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
+			return ;
+		}
+		print_message("has taken a fork", philo);
+		pthread_mutex_lock(&philo->rutine->fork[philo->left_fork]);
+		if (philo_is_dead(philo->rutine))
+		{
+			pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
+			pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
+			return ;
+		}
+	print_message("has taken a fork", philo);
+	}
+	else
+		lock_forks_odd(philo);
 }
+
 // Si todos toman primero el tenedor izquierdo,
 // todos tendrían uno bloqueado, y nunca llegarían al segundo (interbloqueo total).
 // Al variar el orden entre pares e impares:

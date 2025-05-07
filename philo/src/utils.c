@@ -42,35 +42,6 @@ void	init_mutex(t_rutine *rutine)
 	}
 }
 
-void	*routine_check(void *arg)
-{
-	t_rutine	*rutine;
-	int			i;
-
-	rutine = (t_rutine *)arg;
-	while (1)
-	{
-		i = 0;
-		while (i < rutine->num_philo)
-		{
-			if (!philo_is_alive(&rutine->philos[i]))
-				return (NULL);
-			i++;
-		}
-		pthread_mutex_lock(&rutine->meal_full);
-		if (rutine->total_turns != -1
-			&& rutine->philosophers_full == rutine->num_philo)
-		{
-			pthread_mutex_unlock(&rutine->meal_full);
-			return (NULL);
-		}
-		pthread_mutex_unlock(&rutine->meal_full);
-		usleep(500);
-			// Pequeño delay para evitar sobrecargar la CPU con el bucle
-	}
-	return (NULL);
-}
-
 // Comprueba si un filósofo sigue vivo según el tiempo desde su última comida.
 int	philo_is_alive(t_philosophers *philo)
 {
@@ -96,9 +67,8 @@ int	philo_is_alive(t_philosophers *philo)
 			philo->rutine->dead = 1;
 		}
 		pthread_mutex_unlock(&philo->rutine->mutex_rutine);
-		pthread_mutex_lock(&philo->rutine->print_lock);
-		printf("%d died\n",	philo->id_philo);
-		pthread_mutex_unlock(&philo->rutine->print_lock);
+		print_message("is dead", philo);
+
 		alive = 0;
 	}
 	pthread_mutex_unlock(&philo->mutex_philo);
@@ -115,15 +85,31 @@ void	destroy_mutex(t_rutine *routine)
 		pthread_mutex_destroy(&routine->philos[i].mutex_philo);
 		i++;
 	}
-	i = 0;
-	while (i < routine->num_philo)
-	{
-		pthread_mutex_destroy(&routine->fork[i]);
-		i++;
-	}
+
+	// Destruir los mutex de los tenedores
+    destroy_forks(routine, routine->num_philo);
+
+	// i = 0;
+	// while (i < routine->num_philo)
+	// {
+	// 	pthread_mutex_destroy(&routine->fork[i]);
+	// 	i++;
+	// }
+	
+	pthread_mutex_destroy(&routine->print_lock);
+	
 	free(routine->philos);
 	routine->philos = NULL;
 	free(routine->fork);
 	routine->fork = NULL;
-	pthread_mutex_destroy(&routine->print_lock);
+}
+
+void	print_message(char *str, t_philosophers *philo)
+{
+	int	current_time;
+
+	pthread_mutex_lock(&philo->rutine->print_lock);
+	current_time = milliseconds() - philo->rutine->start_rutine;
+	printf("%u %d %s\n", current_time, philo->id_philo, str);
+	pthread_mutex_unlock(&philo->rutine->print_lock);
 }

@@ -23,11 +23,12 @@ void	ft_sleep(t_philosophers *philo)
 	{
 		if (philo_is_dead(philo->rutine))
 			return ;
-		pthread_mutex_lock(&philo->rutine->print_lock);
-		printf("%d is sleeping\n", philo->id_philo);
-		pthread_mutex_unlock(&philo->rutine->print_lock);
+		print_message("is sleeping", philo);
+		pthread_mutex_lock(&philo->rutine->mutex_rutine);//mutex para status
 		philo->rutine->status = 0; // Marca que el filósofo está durmiendo.
 	}
+	pthread_mutex_unlock(&philo->rutine->mutex_rutine);
+
 	while (milliseconds() - start_sleep < philo->rutine->time_sleep)
 	{
 		if (philo_is_dead(philo->rutine))

@@ -20,10 +20,10 @@ void	ft_think(t_philosophers *philo)
 	{
 		if (philo_is_dead(philo->rutine))
 			return ;
-		pthread_mutex_lock(&philo->rutine->print_lock);
-		printf("%d is thinking\n", philo->id_philo);
-		pthread_mutex_unlock(&philo->rutine->print_lock);
+		print_message("is thinking", philo);
+		pthread_mutex_lock(&philo->rutine->mutex_rutine);
 		philo->rutine->status = 2;
 		usleep(1000);
 	}
+	pthread_mutex_unlock(&philo->rutine->mutex_rutine);
 }

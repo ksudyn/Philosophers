@@ -16,8 +16,9 @@ int	philo_is_dead(t_rutine *rutine)
 {
 	int dead;
 
-	pthread_mutex_lock(&rutine->check_dead);
+	pthread_mutex_lock(&rutine->mutex_rutine);
 	dead = rutine->dead;
-	pthread_mutex_unlock(&rutine->check_dead);
+	pthread_mutex_unlock(&rutine->mutex_rutine);
+	//cambiando la variable porque en philo_is_alive es otroa
 	return (dead);
 }
