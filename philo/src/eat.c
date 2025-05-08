@@ -23,7 +23,8 @@ void	update_meal(t_philosophers *philo)
 void	ft_eat(t_philosophers *philo)
 {
 	// Bloquea los tenedores según el ID del filósofo (usando la función lock_forks)
-	lock_forks(philo);
+	if (!lock_forks(philo))
+		return ;
 	// Verifica si el filósofo está muerto, si es así, sale de la función
 	if (philo_is_dead(philo->rutine))
 	{
@@ -49,3 +50,6 @@ void	ft_eat(t_philosophers *philo)
 	// Imprime un mensaje indicando que el filósofo ha terminado de comer
 	print_message("has finished eating", philo);
 }
+
+//he convertido lock_fortks en int para que en esta funcion si al comprobar en lock_forks
+//si un filosofo muere se desbloqueen los tenedores y en esta funcion justo despues no los vuelva a desbloquear

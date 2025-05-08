@@ -53,7 +53,6 @@ typedef struct s_rutine
 	pthread_mutex_t		*fork;
 	pthread_mutex_t		meal_full;
 	pthread_mutex_t		print_lock;
-	pthread_mutex_t		check_dead;
 	pthread_mutex_t		mutex_rutine;
 	pthread_t			chechk_routine;
 	t_philosophers		*philos;
@@ -64,8 +63,8 @@ int						philo_is_dead(t_rutine *rutine);
 void					update_meal(t_philosophers *philo);
 void					ft_eat(t_philosophers *philo);
 // FORKS.C
-void 					lock_forks_odd(t_philosophers *philo);
-void					lock_forks(t_philosophers *philo);
+int						lock_forks_odd(t_philosophers *philo);
+int						lock_forks(t_philosophers *philo);
 void					unlock_forks(t_philosophers *philo);
 void					init_forks(t_rutine *rutine);
 void					destroy_forks(t_rutine *rutine, int i);

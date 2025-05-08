@@ -31,15 +31,16 @@ void	*one_philo(t_philosophers *philo)
 	pthread_mutex_lock(&philo->rutine->fork[philo->left_fork]);
 	print_message("has taken a fork", philo);
 	precise_sleep(philo->rutine->time_die);
-	pthread_mutex_lock(&philo->rutine->check_dead);
+	pthread_mutex_lock(&philo->rutine->mutex_rutine);
 	if (!philo->rutine->dead)
 	{
 		philo->rutine->dead = 1;
 	}
-	pthread_mutex_unlock(&philo->rutine->check_dead);
+	pthread_mutex_unlock(&philo->rutine->mutex_rutine);
 	pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
 	return (NULL);
 }
+//he metido mutex_rutine en lugar de la variable anterior que al final elimine
 
 void	*routine(void *philo)
 {

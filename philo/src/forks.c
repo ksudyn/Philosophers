@@ -12,13 +12,13 @@
 
 #include "philosophers.h"
 
-void lock_forks_odd(t_philosophers *philo)
+int lock_forks_odd(t_philosophers *philo)
 {
 	pthread_mutex_lock(&philo->rutine->fork[philo->left_fork]);
 	if (philo_is_dead(philo->rutine))
 	{
 		pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
-		return ;
+		return (0);
 	}
 	pthread_mutex_lock(&philo->rutine->fork[philo->right_fork]);
 	print_message("has taken a fork", philo);
@@ -26,15 +26,16 @@ void lock_forks_odd(t_philosophers *philo)
 	{
 		pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
 		pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
-		return ;
+		return (0);
 	}
 	print_message("has taken a fork", philo);
+	return (1);
 }
 
-void lock_forks(t_philosophers *philo)
+int lock_forks(t_philosophers *philo)
 {
 	if (philo_is_dead(philo->rutine))
-		return ;
+		return (0);
 
 	if (philo->id_philo % 2 == 0)
 	{
@@ -42,7 +43,7 @@ void lock_forks(t_philosophers *philo)
 		if (philo_is_dead(philo->rutine))
 		{
 			pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
-			return ;
+			return (0);
 		}
 		print_message("has taken a fork", philo);
 		pthread_mutex_lock(&philo->rutine->fork[philo->left_fork]);
@@ -50,13 +51,16 @@ void lock_forks(t_philosophers *philo)
 		{
 			pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
 			pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
-			return ;
+			return (0);
 		}
 	print_message("has taken a fork", philo);
+	return (1);
 	}
 	else
-		lock_forks_odd(philo);
+		return lock_forks_odd(philo);
 }
+
+
 
 // Si todos toman primero el tenedor izquierdo,
 // todos tendrían uno bloqueado, y nunca llegarían al segundo (interbloqueo total).

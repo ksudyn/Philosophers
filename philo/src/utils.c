@@ -28,7 +28,6 @@ void	init_mutex(t_rutine *rutine)
 	int				thread;
 
 	pthread_mutex_init(&rutine->print_lock, NULL);
-	pthread_mutex_init(&rutine->check_dead, NULL);
 	pthread_mutex_init(&rutine->mutex_rutine, NULL);
 	pthread_mutex_init(&rutine->meal_full, NULL);
 	i = 0;
@@ -41,6 +40,7 @@ void	init_mutex(t_rutine *rutine)
 		i++;
 	}
 }
+//elimine la varibale chek_dead del mutex_init
 
 // Comprueba si un filósofo sigue vivo según el tiempo desde su última comida.
 int	philo_is_alive(t_philosophers *philo)

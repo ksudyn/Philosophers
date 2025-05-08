@@ -14,6 +14,9 @@
 
 void	ft_think(t_philosophers *philo)
 {
+	int	did_lock;
+
+	did_lock = 0;
 	if (philo_is_dead(philo->rutine))
 		return ;
 	if (philo->rutine->status != 2)
@@ -22,8 +25,14 @@ void	ft_think(t_philosophers *philo)
 			return ;
 		print_message("is thinking", philo);
 		pthread_mutex_lock(&philo->rutine->mutex_rutine);
+		did_lock = 1;
 		philo->rutine->status = 2;
 		usleep(1000);
 	}
-	pthread_mutex_unlock(&philo->rutine->mutex_rutine);
+	if(did_lock)
+		pthread_mutex_unlock(&philo->rutine->mutex_rutine);
 }
+
+//en esta funcion he metido el did_lock para que no desbloque si no entra en la funcion
+// funciona mejor esto que meter todo dentro de la funncion, ppero valdria igua
+//asui solo de desbloquea si se bloquea antes 
