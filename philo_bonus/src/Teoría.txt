@@ -1,0 +1,15 @@
+En la parte bonus los filósofos son procesos, no hilos. Compartir mutex en memoria entre procesos es más complejo. Además el enunciado pide explícitamente semáforos POSIX nombrados.
+
+Qué hace cada semáforo aquí:
+
+sem_forks: semáforo contable que representa el número de tenedores libres en el centro. Inicializado con num_philo. Para comer un filósofo realiza sem_wait(sem_forks) dos veces (coge dos tenedores) y libera con sem_post dos veces. Con esto evitamos mantener un array de estados.
+
+sem_print: semáforo binario (1) que serializa las impresiones en stdout para que las líneas no se mezclen entre procesos.
+
+sem_eat: semáforo binario que protege la lectura/escritura de campos compartidos por monitor y rutina del filósofo dentro de cada proceso (ej. last_meal, count_eaten). Aunque last_meal es local al proceso, dentro del proceso hay concurrencia entre la rutina y el hilo monitor.
+
+sem_room (opcional): si lo inicializas a num_philo - 1 previenes que todos intenten coger 2 tenedores simultáneamente — es otra forma de evitar live-lock/deadlock (en la práctica reduce competencia).
+
+Resumen: los semáforos sustituyen los mutex porque sirven para sincronizar entre procesos y para contar recursos (tenedores), algo natural con sem_t y sem_open (named semaphores).
+
+

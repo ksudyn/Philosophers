@@ -6,11 +6,10 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:21:37 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/09 20:32:55 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/10 19:47:59 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-/* init_bonus.c */
 #include "../includes/philo_bonus.h"
 
 /* init_philos_array: llena datos básicos (no toca semáforos ni forks) */
@@ -65,7 +64,16 @@ int	init_semaphores(t_rutine *rutine)
 	else
 		rutine->sem_room = NULL;
 	if (rutine->sem_room == SEM_FAILED)
-		rutine->sem_room = NULL; /* if room failed but others ok,
-			it's still workable; set to NULL */
+		rutine->sem_room = NULL;
+
 	return (0);
 }
+// sem_unlink elimina un semáforo nombrado del sistema operativo, si existe.
+// Es similar a borrar un archivo, porque los semáforos POSIX con nombre viven en el kernel
+// y persisten incluso después de que el programa termina.
+// Lo hacemos al inicio para evitar errores al crear el semáforo con sem_open(O_CREAT | O_EXCL):
+// O_CREAT → crea el semáforo si no existe.
+// O_EXCL → si ya existe, falla.
+// Sin el sem_unlink, si ejecutas tu programa varias veces seguidas,
+// sem_open fallará porque el semáforo ya estaba creado de la ejecución anterior.
+// sem_unlink limpia semáforos "viejos" antes de crear los nuevos para esta ejecución

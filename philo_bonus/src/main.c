@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 12:50:51 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/09 20:37:23 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/10 20:45:04 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,20 +19,20 @@ int	main(int argc, char **argv)
 	/* inicializar a cero */
 	memset(&rutine, 0, sizeof(rutine));
 	if (ft_parse_bonus(argc, argv, &rutine) != 0)
-		return (ft_error(1));
+		return (ft_error_bonus(1));
 	if (init_philos_array(&rutine) != 0)
-		return (ft_error(2));
+		return (ft_error_bonus(2));
 	if (init_semaphores(&rutine) != 0)
 	{
 		free_philos_array(&rutine);
-		return (ft_error(3));
+		return (ft_error_bonus(3));
 	}
 	/* marcar tiempo de inicio común */
 	rutine.start_time = milliseconds_bonus();
 	if (spawn_philosophers(&rutine) != 0)
 	{
 		wait_and_cleanup(&rutine);
-		return (ft_error(4));
+		return (ft_error_bonus(4));
 	}
 	/* padre espera y limpia */
 	wait_and_cleanup(&rutine);

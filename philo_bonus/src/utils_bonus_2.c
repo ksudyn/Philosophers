@@ -6,13 +6,13 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:32:33 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/09 20:35:53 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/10 20:42:02 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_bonus.h"
 
-
+/* libera la memoria dinámica que almacena */
 void	free_philos_array(t_rutine *rutine)
 {
 	if (!rutine)
@@ -35,38 +35,27 @@ void	print_msg(t_philo *philo, const char *msg)
 	sem_post(philo->rutine->sem_print);
 }
 
-static void	start_child(t_philo *philo)
+void	child_cleanup(t_rutine *rutin)
 {
-	/* en el hijo: ejecutar rutina y exit */
-	philo->rutine->start_time = philo->rutine->start_time; /* no hace nada,
-		sólo seguridad */
-	philo_routine(philo);
-	/* nunca debe volver; philo_routine deberá llamar exit(0/1) */
-	exit(0);
-}
-
-int	create_processes(t_rutine *rutine)
-{
-	int		i;
-	pid_t	pid;
-
-	i = 0;
-	while (i < rutine->num_philo)
+	if (!rutin)
+		return ;
+	if (rutin->sem_print && rutin->sem_print != SEM_FAILED)
+		sem_close(rutin->sem_print);
+	if (rutin->sem_forks && rutin->sem_forks != SEM_FAILED)
+		sem_close(rutin->sem_forks);
+	if (rutin->sem_eat && rutin->sem_eat != SEM_FAILED)
+		sem_close(rutin->sem_eat);
+	if (rutin->sem_room && rutin->sem_room != SEM_FAILED)
+		sem_close(rutin->sem_room);
+	/* liberar arrays heredados por fork (reduce "still reachable" de Valgrind) */
+	if (rutin->philos)
 	{
-		pid = fork();
-		if (pid < 0)
-			return (1);
-		if (pid == 0)
-		{
-			/* proceso hijo */
-			rutine->philos[i].pid = getpid();
-			start_child(&rutine->philos[i]);
-			/* no llega */
-		}
-		/* padre */
-		rutine->philos[i].pid = pid;
-		rutine->pids[i] = pid;
-		i++;
+		free(rutin->philos);
+		rutin->philos = NULL;
 	}
-	return (0);
+	if (rutin->pids)
+	{
+		free(rutin->pids);
+		rutin->pids = NULL;
+	}
 }

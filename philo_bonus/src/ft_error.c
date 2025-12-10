@@ -6,13 +6,13 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 13:06:24 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/09 20:24:35 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/10 20:44:16 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_bonus.h"
 
-int	ft_error(int i)
+int	ft_error_bonus(int i)
 {
 	if (i == 1)
 		printf("Error: invalid args\n");
