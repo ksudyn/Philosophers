@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:17:42 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/10 19:46:20 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/11 19:09:38 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,6 @@ void	*monitor_thread(void *arg)
 	}
 	return (NULL);
 }
-
 
 // Toma dos “tenedores” usando sem_forks.
 // Si sem_room está activo, primero hace sem_wait(sem_room) (evita deadlock).
@@ -95,6 +94,8 @@ void	init_philo(t_philo *philo)
 		exit(1);
 	}
 	pthread_detach(mon);
+	if (philo->id_philo % 2 == 0)
+    usleep(5000);
 }
 
 // Caso especial: solo hay un filósofo.

@@ -6,34 +6,30 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:28:30 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/10 20:32:54 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/11 17:42:30 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philo_bonus.h"
 
 /* Espera a todos los hijos y devuelve 1 si alguno murió */
-static int	wait_for_children(t_rutine *r)
+static int	wait_for_first_child_exit(t_rutine *r)
 {
-	int		i;
 	int		status;
 	pid_t	wpid;
-	int		someone_died;
 
-	someone_died = 0;
-	i = 0;
-	while (i < r->num_philo)
-	{
-		wpid = waitpid(-1, &status, 0);
-		if (wpid == -1)
-			continue ;
-		if ((WIFEXITED(status) && WEXITSTATUS(status) != 0)
-			|| WIFSIGNALED(status))
-			someone_died = 1;
-		i++;
-	}
-	return (someone_died);
+	(void)r;
+	status = 0;
+	wpid = waitpid(-1, &status, 0);
+	if (wpid == -1)
+		return (0);
+	/* si salió con error => alguien murió => return 1 */
+	if ((WIFEXITED(status) && WEXITSTATUS(status) != 0)
+		|| WIFSIGNALED(status))
+		return (1);
+	return (0);
 }
+
 
 /* Mata todos los hijos usando SIGKILL */
 static void	kill_all_children(t_rutine *r)
@@ -72,7 +68,7 @@ void	wait_and_cleanup(t_rutine *r)
 {
 	if (!r)
 		return ;
-	if (wait_for_children(r))
+	if (wait_for_first_child_exit(r))
 		kill_all_children(r);
 	cleanup_semaphores(r);
 }

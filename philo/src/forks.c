@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   forks.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ksudyn <marvin@42.fr>                      +#+  +:+       +#+        */
+/*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/29 19:30:26 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/04/29 19:30:28 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/11 19:19:09 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosophers.h"
 
-int lock_forks_odd(t_philosophers *philo)
+int	lock_forks_odd(t_philosophers *philo)
 {
 	pthread_mutex_lock(&philo->rutine->fork[philo->left_fork]);
 	if (philo_is_dead(philo->rutine))
@@ -20,8 +20,8 @@ int lock_forks_odd(t_philosophers *philo)
 		pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
 		return (0);
 	}
-	pthread_mutex_lock(&philo->rutine->fork[philo->right_fork]);
 	print_message("has taken a fork", philo);
+	pthread_mutex_lock(&philo->rutine->fork[philo->right_fork]);
 	if (philo_is_dead(philo->rutine))
 	{
 		pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
@@ -32,11 +32,10 @@ int lock_forks_odd(t_philosophers *philo)
 	return (1);
 }
 
-int lock_forks(t_philosophers *philo)
+int	lock_forks(t_philosophers *philo)
 {
 	if (philo_is_dead(philo->rutine))
 		return (0);
-
 	if (philo->id_philo % 2 == 0)
 	{
 		pthread_mutex_lock(&philo->rutine->fork[philo->right_fork]);
@@ -53,14 +52,12 @@ int lock_forks(t_philosophers *philo)
 			pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
 			return (0);
 		}
-	print_message("has taken a fork", philo);
-	return (1);
+		print_message("has taken a fork", philo);
+		return (1);
 	}
 	else
-		return lock_forks_odd(philo);
+		return (lock_forks_odd(philo));
 }
-
-
 
 // Si todos toman primero el tenedor izquierdo,
 // todos tendrían uno bloqueado, y nunca llegarían al segundo (interbloqueo total).
@@ -72,23 +69,23 @@ int lock_forks(t_philosophers *philo)
 // No todos los filósofos se quedan atascados esperando el segundo tenedor.
 // Se logra progreso seguro y concurrente sin interbloqueo
 
-void unlock_forks(t_philosophers *philo)
+void	unlock_forks(t_philosophers *philo)
 {
 	if (philo->id_philo % 2 == 0)
-    {
-    	pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
-    	pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
-    }
-    else
-    {
-    	pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
-        pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
-    }
+	{
+		pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
+		pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
+	}
+	else
+	{
+		pthread_mutex_unlock(&philo->rutine->fork[philo->right_fork]);
+		pthread_mutex_unlock(&philo->rutine->fork[philo->left_fork]);
+	}
 }
 // esta función es crucial para que los tenedores no queden "retenidos"
 // por un filósofo después de comer,
 // y para que la ejecución pueda continuar sin bloqueos innecesarios
-//tiene que desbloquearse en el orden inverso al que se bloquearon para optimizar
+// tiene que desbloquearse en el orden inverso al que se bloquearon para optimizar
 
 void	init_forks(t_rutine *rutine)
 {
@@ -113,7 +110,7 @@ void	init_forks(t_rutine *rutine)
 
 void	destroy_forks(t_rutine *rutine, int i)
 {
-    if (!rutine->fork)
+	if (!rutine->fork)
 		return ;
 	while (--i >= 0)
 		pthread_mutex_destroy(&rutine->fork[i]);
