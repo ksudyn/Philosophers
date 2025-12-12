@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:28:30 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/11 17:42:30 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/12 17:56:23 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,10 +56,13 @@ static void	cleanup_semaphores(t_rutine *r)
 		sem_close(r->sem_eat);
 	if (r->sem_room)
 		sem_close(r->sem_room);
+	if (r->sem_dead)
+		sem_close(r->sem_dead);
 	sem_unlink("/philo_sem_print");
 	sem_unlink("/philo_sem_forks");
 	sem_unlink("/philo_sem_eat");
 	sem_unlink("/philo_sem_room");
+	sem_unlink("/philo_sem_dead");
 	free_philos_array(r);
 }
 

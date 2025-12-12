@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 12:37:40 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/10 20:44:48 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/12 17:53:17 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ struct s_rutine
 	sem_t				*sem_forks;   // Semáforo que controla el acceso a los "tenedores" (forks)
 	sem_t				*sem_eat;     // Semáforo para proteger el conteo de comidas y evitar condiciones de carrera
 	sem_t				*sem_room;    // Semáforo opcional para limitar cuántos filósofos pueden intentar comer al mismo tiempo
+	sem_t *sem_dead;
 
 	t_philo				*philos;      // Array de filósofos
 	pid_t				*pids;        // Array de PID de todos los procesos hijos, para que el padre pueda controlarlos

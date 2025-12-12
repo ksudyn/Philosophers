@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:17:42 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/11 19:09:38 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/12 17:54:03 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,28 +18,58 @@
 // Compara tiempo actual (milliseconds_bonus()) con last_meal.
 // Si pasó time_die → imprime “is dead”, libera sem_eat y sale del proceso con exit(1).
 // Sino → libera semáforo y duerme 1 ms (usleep(1000)) para no hacer busy-wait.
-void	*monitor_thread(void *arg)
-{
-	t_philo		*philo;
-	t_rutine	*rutin;
+// void	*monitor_thread(void *arg)
+// {
+// 	t_philo		*philo;
+// 	t_rutine	*rutin;
 
-	philo = (t_philo *)arg;
-	rutin = philo->rutine;
-	while (1)
-	{
-		sem_wait(rutin->sem_eat);
-		if ((milliseconds_bonus() - philo->last_meal) > rutin->time_die)
-		{
-			/* print muerte y salir con status 1 */
-			print_msg(philo, "is dead");
-			sem_post(rutin->sem_eat);
-			exit(1);
-		}
-		sem_post(rutin->sem_eat);
-		usleep(1000); /* dormir 1ms para no busyloop */
-	}
-	return (NULL);
+// 	philo = (t_philo *)arg;
+// 	rutin = philo->rutine;
+// 	while (1)
+// 	{
+// 		sem_wait(rutin->sem_eat);
+// 		if ((milliseconds_bonus() - philo->last_meal) > rutin->time_die)
+// 		{
+// 			/* print muerte y salir con status 1 */
+// 			print_msg(philo, "is dead");
+// 			sem_post(rutin->sem_eat);
+// 			exit(1);
+// 		}
+// 		sem_post(rutin->sem_eat);
+// 		usleep(1000); /* dormir 1ms para no busyloop */
+// 	}
+// 	return (NULL);
+// }
+
+void *monitor_thread(void *arg)
+{
+    t_philo *philo = (t_philo *)arg;
+    t_rutine *r = philo->rutine;
+
+    while (1)
+    {
+        sem_wait(r->sem_eat);
+        long long time_since_meal = milliseconds_bonus() - philo->last_meal;
+        sem_post(r->sem_eat);
+
+        if (time_since_meal > r->time_die)
+        {
+            // Solo un proceso puede imprimir muerte
+            if (sem_trywait(r->sem_dead) == 0)
+            {
+                print_msg(philo, "is dead");
+                exit(1);
+            }
+            else
+            {
+                exit(1); // Ya alguien imprimió muerte, salir sin mensaje
+            }
+        }
+        usleep(1000);
+    }
+    return NULL;
 }
+
 
 // Toma dos “tenedores” usando sem_forks.
 // Si sem_room está activo, primero hace sem_wait(sem_room) (evita deadlock).

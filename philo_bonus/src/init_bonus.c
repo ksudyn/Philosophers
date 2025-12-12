@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:21:37 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/10 19:47:59 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/12 18:21:22 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,32 +42,66 @@ int	init_philos_array(t_rutine *rutine)
 }
 
 /* init_semaphores: crea y asigna semáforos POSIX nombrados */
-int	init_semaphores(t_rutine *rutine)
-{
-	sem_unlink("/philo_sem_print");
-	sem_unlink("/philo_sem_forks");
-	sem_unlink("/philo_sem_eat");
-	sem_unlink("/philo_sem_room");
-	rutine->sem_print = sem_open("/philo_sem_print", O_CREAT | O_EXCL, 0644, 1);
-	if (rutine->sem_print == SEM_FAILED)
-		return (1);
-	rutine->sem_forks = sem_open("/philo_sem_forks", O_CREAT | O_EXCL, 0644,
-			rutine->num_philo);
-	if (rutine->sem_forks == SEM_FAILED)
-		return (1);
-	rutine->sem_eat = sem_open("/philo_sem_eat", O_CREAT | O_EXCL, 0644, 1);
-	if (rutine->sem_eat == SEM_FAILED)
-		return (1);
-	if (rutine->num_philo > 1)
-		rutine->sem_room = sem_open("/philo_sem_room", O_CREAT | O_EXCL, 0644,
-				rutine->num_philo - 1);
-	else
-		rutine->sem_room = NULL;
-	if (rutine->sem_room == SEM_FAILED)
-		rutine->sem_room = NULL;
+/* semaphores_bonus.c */
+#include "../includes/philo_bonus.h"
 
-	return (0);
+/* Inicializa semáforo de control de impresión de muerte */
+static int init_sem_dead(t_rutine *r)
+{
+    sem_unlink("/philo_sem_dead");
+    r->sem_dead = sem_open("/philo_sem_dead", O_CREAT | O_EXCL, 0644, 1);
+    return (r->sem_dead == SEM_FAILED);
 }
+
+/* Inicializa semáforos básicos: print, forks y eat */
+static int init_basic_sems(t_rutine *r)
+{
+    sem_unlink("/philo_sem_print");
+    sem_unlink("/philo_sem_forks");
+    sem_unlink("/philo_sem_eat");
+
+    r->sem_print = sem_open("/philo_sem_print", O_CREAT | O_EXCL, 0644, 1);
+    if (r->sem_print == SEM_FAILED)
+        return (1);
+
+    r->sem_forks = sem_open("/philo_sem_forks", O_CREAT | O_EXCL, 0644, r->num_philo);
+    if (r->sem_forks == SEM_FAILED)
+        return (1);
+
+    r->sem_eat = sem_open("/philo_sem_eat", O_CREAT | O_EXCL, 0644, 1);
+    if (r->sem_eat == SEM_FAILED)
+        return (1);
+
+    return (0);
+}
+
+/* Inicializa semáforo de control de "room" (para evitar deadlock) */
+static int init_sem_room(t_rutine *r)
+{
+    if (r->num_philo > 1)
+    {
+        r->sem_room = sem_open("/philo_sem_room", O_CREAT | O_EXCL, 0644,
+                               r->num_philo - 1);
+        if (r->sem_room == SEM_FAILED)
+            r->sem_room = NULL;
+    }
+    else
+        r->sem_room = NULL;
+
+    return (0);
+}
+
+/* Función principal que llama a todas las anteriores */
+int init_semaphores(t_rutine *r)
+{
+    if (init_sem_dead(r))
+        return (1);
+    if (init_basic_sems(r))
+        return (1);
+    init_sem_room(r);  // room no es crítico si falla
+    return (0);
+}
+
 // sem_unlink elimina un semáforo nombrado del sistema operativo, si existe.
 // Es similar a borrar un archivo, porque los semáforos POSIX con nombre viven en el kernel
 // y persisten incluso después de que el programa termina.

@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:32:33 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/10 20:42:02 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/12 17:55:32 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ void	child_cleanup(t_rutine *rutin)
 		sem_close(rutin->sem_eat);
 	if (rutin->sem_room && rutin->sem_room != SEM_FAILED)
 		sem_close(rutin->sem_room);
+	if (rutin->sem_dead && rutin->sem_dead != SEM_FAILED)
+        sem_close(rutin->sem_dead);
 	/* liberar arrays heredados por fork (reduce "still reachable" de Valgrind) */
 	if (rutin->philos)
 	{
