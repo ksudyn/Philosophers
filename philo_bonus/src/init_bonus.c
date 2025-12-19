@@ -6,7 +6,7 @@
 /*   By: ksudyn <ksudyn@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 17:21:37 by ksudyn            #+#    #+#             */
-/*   Updated: 2025/12/12 18:21:22 by ksudyn           ###   ########.fr       */
+/*   Updated: 2025/12/12 18:25:56 by ksudyn           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,6 @@ int	init_philos_array(t_rutine *rutine)
 	}
 	return (0);
 }
-
-/* init_semaphores: crea y asigna semáforos POSIX nombrados */
-/* semaphores_bonus.c */
-#include "../includes/philo_bonus.h"
 
 /* Inicializa semáforo de control de impresión de muerte */
 static int init_sem_dead(t_rutine *r)
